@@ -5,6 +5,7 @@ cloneable
 cre
 csic
 dgarcia
+dplyr
 gpl
 httpeasyrest
 HttpRestClient
@@ -12,6 +13,7 @@ httr
 iim
 Initialise
 LinkingTo
+magrittr
 mit
 ORCID
 Roxygen

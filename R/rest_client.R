@@ -15,13 +15,19 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
   initialize = function(base_url, end_point) {
     self$base_url <- base_url
     self$end_point <- end_point
-    selv$http_req <- private$build_request_object(self$base_url, self$end_point)
+    self$http_req <- private$build_request_object(self$base_url, self$end_point)
   },
-  get = function() {
+  get = function(parameters = NULL) {
     ret <- tryCatch(
       {
-        response <- self$http_req %>%
-          httr2::req_perform()
+        if (is.null(parameters)) {
+          response <- self$http_req %>%
+            httr2::req_perform()
+        } else {
+          response <- self$http_req %>%
+            httr2::req_url_query(!!!parameters) %>%
+            httr2::req_perform()
+        }
         list(
           success = TRUE,
           status_code = response$status_code,
@@ -71,7 +77,7 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
   post_object = function(obj) {
     return(private$post_item(obj))
   },
-  delete = function(id) {
+  delete_object = function(id) {
     return(private$delete_item(id))
   }
 ), private = list(
