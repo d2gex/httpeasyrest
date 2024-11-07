@@ -1,13 +1,16 @@
 Api
 aut
 bioconductor
+cloneable
 cre
 csic
 dgarcia
 gpl
 httpeasyrest
+HttpRestClient
 httr
 iim
+Initialise
 LinkingTo
 mit
 ORCID
