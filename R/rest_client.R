@@ -21,17 +21,17 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
     ret <- tryCatch(
       {
         if (is.null(parameters)) {
-          response <- self$http_req %>%
+          http_resp <- self$http_req %>%
             httr2::req_perform()
         } else {
-          response <- self$http_req %>%
+          http_resp <- self$http_req %>%
             httr2::req_url_query(!!!parameters) %>%
             httr2::req_perform()
         }
         list(
           success = TRUE,
-          status_code = response$status_code,
-          response = response %>%
+          status_code = http_resp$status_code,
+          http_resp = http_resp %>%
             httr2::resp_body_json()
         )
       },
@@ -45,19 +45,21 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
     ret <- tryCatch(
       {
         if (is.null(parameters)) {
-          response <- self$http_req %>%
+          http_resp <- self$http_req %>%
             httr2::req_perform()
         } else {
-          response <- self$http_req %>%
+          http_resp <- self$http_req %>%
             httr2::req_url_query(!!!parameters) %>%
             httr2::req_perform()
         }
         list(
           success = TRUE,
-          status_code = response$status_code,
-          response = response %>% # to dataframe
+          status_code = http_resp$status_code,
+          http_resp = http_resp %>% # to dataframe
             httr2::resp_body_json() %>%
-            lapply(data.frame, stringsAsFactors = FALSE) %>%
+            lapply(function(list_obj) {
+              data.frame(private$null_to_na(list_obj), stringsAsFactors = FALSE)
+            }) %>%
             dplyr::bind_rows()
         )
       },
@@ -121,14 +123,14 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
   delete_item = function(id) {
     ret <- tryCatch(
       {
-        response <- self$http_req %>%
+        http_resp <- self$http_req %>%
           httr2::req_url_path_append(id) %>%
           httr2::req_method("DELETE") %>%
           httr2::req_perform()
         list(
           success = TRUE,
-          status_code = response$status_code,
-          response = response %>% httr2::resp_body_json()
+          status_code = http_resp$status_code,
+          http_resp = http_resp %>% httr2::resp_body_json()
         )
       },
       error = function(e) {
@@ -140,14 +142,14 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
   post_item = function(df_row) {
     ret <- tryCatch(
       {
-        response <- self$http_req %>%
+        http_resp <- self$http_req %>%
           httr2::req_method("POST") %>%
           httr2::req_body_json(df_row) %>%
           httr2::req_perform()
         list(
           success = TRUE,
-          status_code = response$status_code,
-          response = response %>% httr2::resp_body_json()
+          status_code = http_resp$status_code,
+          http_resp = http_resp %>% httr2::resp_body_json()
         )
       },
       error = function(e) {
@@ -155,5 +157,13 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
       }
     )
     return(ret)
+  },
+  null_to_na = function(data) {
+    for (field in names(data)) {
+      if (is.null(data[[field]])) {
+        data[[field]] <- NA
+      }
+    }
+    return(data)
   }
 ))
