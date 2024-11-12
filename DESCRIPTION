@@ -15,8 +15,11 @@ Imports:
     dplyr,
     httr2,
     logger,
-    R6
+    R6,
+    stringi,
+    testit
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://d2gex.github.io/httpeasyrest/
