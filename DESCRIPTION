@@ -7,8 +7,7 @@ Authors@R: person(given = "Dan",
              role = c("aut", "cre"),
              email = "dgarcia@iim.csic.es")
 Description: A tiny wrapper over httr2 to make API querying even easier.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT License
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
@@ -17,3 +16,7 @@ Imports:
     httr2,
     logger,
     R6
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

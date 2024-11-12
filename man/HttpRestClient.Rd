@@ -3,18 +3,45 @@
 \name{HttpRestClient}
 \alias{HttpRestClient}
 \title{HttpRestClient class}
+\value{
+a list with success flag, status code of the call and response from the API in JSON format. It will
+contain the error message in case of error.
+
+a list with success flag, status code of the call and response from the API in a dataframe format. In case
+of error it will contain the error in JSON format.
+
+a list of lists. Each element in the outer list will contain the the successful or failed response, which
+object structure is similar to other calls (success, status_code and response in JSON format).
+
+a list with success flag, status code of the call and response from the API in JSON format. It will
+contain the error message in case of error.
+
+a list with success flag, status code of the call and response from the API in JSON format. It will
+contain the error message in case of error.
+}
 \description{
-it makes simple atomic CRUD requests to a particular end_point
+Class providing simple atomic CRUD requests to a particular end_point
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+
+\item{\code{token}}{string to authenticate against the API}
+
+\item{\code{headers}}{list of HTTP headers}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-HttpRestClient-new}{\code{HttpRestClient$new()}}
-\item \href{#method-HttpRestClient-get}{\code{HttpRestClient$get()}}
+\item \href{#method-HttpRestClient-get_object}{\code{HttpRestClient$get_object()}}
 \item \href{#method-HttpRestClient-get_dataframe}{\code{HttpRestClient$get_dataframe()}}
 \item \href{#method-HttpRestClient-post_dataframe}{\code{HttpRestClient$post_dataframe()}}
 \item \href{#method-HttpRestClient-post_object}{\code{HttpRestClient$post_object()}}
-\item \href{#method-HttpRestClient-delete}{\code{HttpRestClient$delete()}}
+\item \href{#method-HttpRestClient-delete_object}{\code{HttpRestClient$delete_object()}}
 \item \href{#method-HttpRestClient-clone}{\code{HttpRestClient$clone()}}
 }
 }
@@ -24,54 +51,117 @@ it makes simple atomic CRUD requests to a particular end_point
 \subsection{Method \code{new()}}{
 Initialise HttpRestClient client
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$new(base_url, end_point)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$new(base_url, headers, token)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+
+\item{\code{headers}}{list of HTTP headers}
+
+\item{\code{token}}{string to authenticate against the API}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-HttpRestClient-get"></a>}}
-\if{latex}{\out{\hypertarget{method-HttpRestClient-get}{}}}
-\subsection{Method \code{get()}}{
+\if{html}{\out{<a id="method-HttpRestClient-get_object"></a>}}
+\if{latex}{\out{\hypertarget{method-HttpRestClient-get_object}{}}}
+\subsection{Method \code{get_object()}}{
+Gets data from the API and return it in JSON format
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$get()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$get_object(end_point, parameters = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{end_point}}{string containing the relative part of the API URL}
+
+\item{\code{parameters}}{list of parameters to pass on to the query string of the underlying GET method}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HttpRestClient-get_dataframe"></a>}}
 \if{latex}{\out{\hypertarget{method-HttpRestClient-get_dataframe}{}}}
 \subsection{Method \code{get_dataframe()}}{
+Gets data from the API and return it in dataframe format. It expects one record per row in the rendered dataframe.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$get_dataframe(parameters = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$get_dataframe(end_point, parameters = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{end_point}}{string containing the relative part of the API URL}
+
+\item{\code{parameters}}{list of parameters to pass on to the query string of the underlying GET method}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HttpRestClient-post_dataframe"></a>}}
 \if{latex}{\out{\hypertarget{method-HttpRestClient-post_dataframe}{}}}
 \subsection{Method \code{post_dataframe()}}{
+Post every single row of teh passed dataframe in one-by-one fahsion to the API. It expects a row per record to be
+sent, therefore it makes nrow() calls to the API. It will not stop until all rows of the dataframe have been walked
+through.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$post_dataframe(df)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$post_dataframe(end_point, df)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{end_point}}{string containing the relative part of the API URL}
+
+\item{\code{df}}{a dataframe of data to be sent to the API}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HttpRestClient-post_object"></a>}}
 \if{latex}{\out{\hypertarget{method-HttpRestClient-post_object}{}}}
 \subsection{Method \code{post_object()}}{
+Post data to the API. The returned JSON may contain a unique ID generated after the record was registered.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$post_object(obj)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$post_object(end_point, obj)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{end_point}}{string containing the relative part of the API URL}
+
+\item{\code{obj}}{a flat or nested list convertable to a JSON object}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-HttpRestClient-delete"></a>}}
-\if{latex}{\out{\hypertarget{method-HttpRestClient-delete}{}}}
-\subsection{Method \code{delete()}}{
+\if{html}{\out{<a id="method-HttpRestClient-delete_object"></a>}}
+\if{latex}{\out{\hypertarget{method-HttpRestClient-delete_object}{}}}
+\subsection{Method \code{delete_object()}}{
+Delete a single record identified by the passed field which should be unique.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$delete(id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HttpRestClient$delete_object(end_point, field)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{end_point}}{string containing the relative part of the API URL}
+
+\item{\code{field}}{a flat or nested list convertable to a JSON object}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HttpRestClient-clone"></a>}}
