@@ -19,6 +19,7 @@ httr
 iim
 Initialise
 io
+isFALSE
 JSON
 knitr
 LinkingTo

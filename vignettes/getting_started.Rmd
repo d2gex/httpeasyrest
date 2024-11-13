@@ -45,7 +45,8 @@ head(api_data$http_resp)
 # Get single specific booking record as JSON object
 Notice that this specific API maps the `id` identifying the record in the URL itself, rather than as a query string
 ```{r get_single_booking_record}
-api_data <- booking_client$get_object(end_point = "booking/2657")
+booking_id <- api_data$http_resp[[1]]$bookingid
+api_data <- booking_client$get_object(end_point = paste0("booking/", booking_id))
 api_data$http_resp
 ```
 # Create a single booking object afresh
@@ -65,7 +66,7 @@ data <- list(
 )
 api_data <- booking_client$post_object(end_point = "booking", data)
 testit::assert(isTRUE(api_data$success))
-head(api_data$http_resp)
+api_data$http_resp
 ```
 Let's ensure that such object was indeed sent to the API successfully.
 ```{r send_single_booking_record_checkup}
@@ -73,4 +74,13 @@ end_point <- paste0("booking/", api_data$http_resp$bookingid)
 inserted_booking <- booking_client$get_object(end_point = end_point)
 testit::assert(inserted_booking$http_resp$firstname == unique_name)
 inserted_booking$http_resp
+```
+# Delete a single booking object
+Now we want to delete the same object we just inserted. Unfortunately the API does not allow deleting records, probably to avoid clashes among the multiple simultaneous users that may be calling the API. APIs usually accomplish that by returning an HTTP code = 403. You can know more about HTTP codes here https://cheatography.com/kstep/cheat-sheets/http-status-codes/.
+```{r delete_single_booking_record, eval = FALSE}
+end_point <- "booking/"
+ret <- booking_client$delete_object(end_point = end_point, field = api_data$http_resp$bookingid)
+testit::assert(ret$status_code == 403)
+```
+t::assert(isFALSE(deleted_booking$success))
 ```

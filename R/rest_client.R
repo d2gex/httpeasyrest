@@ -114,6 +114,7 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
       http_request <- http_request %>%
         httr2::req_auth_bearer_token(token)
     }
+    return(http_request)
   },
   error_handler = function(e, method = "post") {
     ret <- list(
@@ -132,7 +133,8 @@ HttpRestClient <- R6::R6Class("HttpRestClient", public = list( # nolint
           e$resp %>% httr2::resp_body_json()
         },
         error = function(ex) { # something happened at server level?
-          logger::log_error("Something unexpected happened. Review either the data your are sending or the endpoint")
+          logger::log_error("Something unexpected happened. Look at the returned error message and status code for
+          more information")
           if (is.null(ex$resp)) {
             ex$message
           } else {
