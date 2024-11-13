@@ -84,12 +84,12 @@
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">booking_client</span><span class="op">$</span><span class="fu">get_dataframe</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"booking"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   bookingid</span></span>
-<span><span class="co">#&gt; 1       154</span></span>
-<span><span class="co">#&gt; 2      1519</span></span>
-<span><span class="co">#&gt; 3       928</span></span>
-<span><span class="co">#&gt; 4       595</span></span>
-<span><span class="co">#&gt; 5       633</span></span>
-<span><span class="co">#&gt; 6      1303</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        44</span></span>
+<span><span class="co">#&gt; 2       163</span></span>
+<span><span class="co">#&gt; 3       281</span></span>
+<span><span class="co">#&gt; 4       273</span></span>
+<span><span class="co">#&gt; 5        64</span></span>
+<span><span class="co">#&gt; 6       101</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-all-bookings-ids-as-a-json-object">Get all bookings IDS as a JSON object<a class="anchor" aria-label="anchor" href="#get-all-bookings-ids-as-a-json-object"></a>
@@ -99,32 +99,32 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
 <span><span class="co">#&gt; [[1]]$bookingid</span></span>
-<span><span class="co">#&gt; [1] 154</span></span>
+<span><span class="co">#&gt; [1] 44</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
 <span><span class="co">#&gt; [[2]]$bookingid</span></span>
-<span><span class="co">#&gt; [1] 1519</span></span>
+<span><span class="co">#&gt; [1] 163</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
 <span><span class="co">#&gt; [[3]]$bookingid</span></span>
-<span><span class="co">#&gt; [1] 928</span></span>
+<span><span class="co">#&gt; [1] 281</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[4]]</span></span>
 <span><span class="co">#&gt; [[4]]$bookingid</span></span>
-<span><span class="co">#&gt; [1] 595</span></span>
+<span><span class="co">#&gt; [1] 273</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[5]]</span></span>
 <span><span class="co">#&gt; [[5]]$bookingid</span></span>
-<span><span class="co">#&gt; [1] 633</span></span>
+<span><span class="co">#&gt; [1] 64</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[6]]</span></span>
 <span><span class="co">#&gt; [[6]]$bookingid</span></span>
-<span><span class="co">#&gt; [1] 1303</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 101</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-single-specific-booking-record-as-json-object">Get single specific booking record as JSON object<a class="anchor" aria-label="anchor" href="#get-single-specific-booking-record-as-json-object"></a>
@@ -132,9 +132,31 @@
 <p>Notice that this specific API maps the <code>id</code> identifying
 the record in the URL itself, rather than as a query string</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">booking_client</span><span class="op">$</span><span class="fu">get_object</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"booking/2657"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">booking_id</span> <span class="op">&lt;-</span> <span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">bookingid</span></span>
+<span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">booking_client</span><span class="op">$</span><span class="fu">get_object</span><span class="op">(</span>end_point <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"booking/"</span>, <span class="va">booking_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="co">#&gt; $firstname</span></span>
+<span><span class="co">#&gt; [1] "Jane"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lastname</span></span>
+<span><span class="co">#&gt; [1] "Doe"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $totalprice</span></span>
+<span><span class="co">#&gt; [1] 111</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $depositpaid</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $bookingdates</span></span>
+<span><span class="co">#&gt; $bookingdates$checkin</span></span>
+<span><span class="co">#&gt; [1] "2018-01-01"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $bookingdates$checkout</span></span>
+<span><span class="co">#&gt; [1] "2019-01-01"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $additionalneeds</span></span>
+<span><span class="co">#&gt; [1] "Extra pillows please"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="create-a-single-booking-object-afresh">Create a single booking object afresh<a class="anchor" aria-label="anchor" href="#create-a-single-booking-object-afresh"></a>
@@ -157,9 +179,9 @@ down to luck - recall this API is used by many people.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">booking_client</span><span class="op">$</span><span class="fu">post_object</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"booking"</span>, <span class="va">data</span><span class="op">)</span></span>
 <span><span class="fu">testit</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/testit/man/assert.html" class="external-link">assert</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">$</span><span class="va">success</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span><span class="op">)</span></span>
+<span><span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span></span>
 <span><span class="co">#&gt; $bookingid</span></span>
-<span><span class="co">#&gt; [1] 1794</span></span>
+<span><span class="co">#&gt; [1] 457</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $booking</span></span>
 <span><span class="co">#&gt; $booking$firstname</span></span>
@@ -213,6 +235,20 @@ successfully.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $additionalneeds</span></span>
 <span><span class="co">#&gt; [1] "Breakfast"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="delete-a-single-booking-object">Delete a single booking object<a class="anchor" aria-label="anchor" href="#delete-a-single-booking-object"></a>
+</h2>
+<p>Now we want to delete the same object we just inserted. Unfortunately
+the API does not allow deleting records, probably to avoid clashes among
+the multiple simultaneous users that may be calling the API. APIs
+usually accomplish that by returning an HTTP code = 403. You can know
+more about HTTP codes here <a href="https://cheatography.com/kstep/cheat-sheets/http-status-codes/" class="external-link uri">https://cheatography.com/kstep/cheat-sheets/http-status-codes/</a>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">end_point</span> <span class="op">&lt;-</span> <span class="st">"booking/"</span></span>
+<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">booking_client</span><span class="op">$</span><span class="fu">delete_object</span><span class="op">(</span>end_point <span class="op">=</span> <span class="va">end_point</span>, field <span class="op">=</span> <span class="va">api_data</span><span class="op">$</span><span class="va">http_resp</span><span class="op">$</span><span class="va">bookingid</span><span class="op">)</span></span>
+<span><span class="fu">testit</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/testit/man/assert.html" class="external-link">assert</a></span><span class="op">(</span><span class="va">ret</span><span class="op">$</span><span class="va">status_code</span> <span class="op">==</span> <span class="fl">403</span><span class="op">)</span></span></code></pre></div>
+<p>t::assert(isFALSE(deleted_booking$success)) ```</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
