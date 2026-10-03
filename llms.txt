@@ -1,0 +1,26 @@
+# httpeasyrest
+
+A tiny wrapper over httr2 to make API querying even easier
+
+# Installation
+
+This R package can be installed through the devtools as follows:
+
+``` r
+
+  devtools::install_github("https://github.com/d2gex/httpeasyrest", dep=TRUE)
+```
+
+# Package index
+
+## All functions
+
+- [`HttpRestClient`](https://d2gex.github.io/httpeasyrest/reference/HttpRestClient.md)
+  : HttpRestClient class
+
+# Articles
+
+### All vignettes
+
+- [Getting
+  started](https://d2gex.github.io/httpeasyrest/articles/getting_started.md):
