@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, eval = FALSE}
 project_folder <- dirname(getwd())
 path_to_env <- file.path(project_folder, ".env")
 readRenviron(path_to_env)
@@ -23,8 +23,10 @@ auth_token <- Sys.getenv("AUTH_TOKEN")
 headers <- list("Accept" = "application/json", "Content-type" = "application/json")
 ```
 
+**Note (2026):** This vignette uses Restful Booker, a third-party sandbox API. All chunks that configure or call the sandbox are marked `eval = FALSE`, so documentation builds do not make external requests or create, retrieve, or delete sandbox records. Run the examples interactively only if you accept responsibility for their effects on that service.
+
 Let's instantiate the API client
-```{r instance_booking_client}
+```{r instance_booking_client, eval = FALSE}
 booking_client <- httpeasyrest::HttpRestClient$new(
   base_url = api_base_url,
   headers = headers,
@@ -33,25 +35,25 @@ booking_client <- httpeasyrest::HttpRestClient$new(
 ```
 
 # Get all booking IDS as a DATAFRAME
-```{r get_booking_ids_df}
+```{r get_booking_ids_df, eval = FALSE}
 api_data <- booking_client$get_dataframe(end_point = "booking")
 head(api_data$http_resp)
 ```
 # Get all bookings IDS as a JSON object
-```{r get_booking_ids_json}
+```{r get_booking_ids_json, eval = FALSE}
 api_data <- booking_client$get_object(end_point = "booking")
 head(api_data$http_resp)
 ```
 # Get single specific booking record as JSON object
 Notice that this specific API maps the `id` identifying the record in the URL itself, rather than as a query string
-```{r get_single_booking_record}
+```{r get_single_booking_record, eval = FALSE}
 booking_id <- api_data$http_resp[[1]]$bookingid
 api_data <- booking_client$get_object(end_point = paste0("booking/", booking_id))
 api_data$http_resp
 ```
 # Create a single booking object afresh
 Let's create a unique name that we can confidently search for it afterwards ensuring that is unique, and therefore its fetching is not down to luck - recall this API is used by many people.
-```{r send_single_booking_record}
+```{r send_single_booking_record, eval = FALSE}
 unique_name <- stringi::stri_rand_strings(1, 12)
 data <- list(
   firstname = unique_name,
@@ -69,18 +71,19 @@ testit::assert(isTRUE(api_data$success))
 api_data$http_resp
 ```
 Let's ensure that such object was indeed sent to the API successfully.
-```{r send_single_booking_record_checkup}
+```{r send_single_booking_record_checkup, eval = FALSE}
 end_point <- paste0("booking/", api_data$http_resp$bookingid)
 inserted_booking <- booking_client$get_object(end_point = end_point)
 testit::assert(inserted_booking$http_resp$firstname == unique_name)
 inserted_booking$http_resp
 ```
 # Delete a single booking object
-Now we want to delete the same object we just inserted. Unfortunately the API does not allow deleting records, probably to avoid clashes among the multiple simultaneous users that may be calling the API. APIs usually accomplish that by returning an HTTP code = 403. You can know more about HTTP codes here https://cheatography.com/kstep/cheat-sheets/http-status-codes/.
+Delete the booking created in the previous example by appending its identifier to the `booking` endpoint.
 ```{r delete_single_booking_record, eval = FALSE}
 end_point <- "booking/"
-ret <- booking_client$delete_object(end_point = end_point, field = api_data$http_resp$bookingid)
-testit::assert(ret$status_code == 403)
-```
-t::assert(isFALSE(deleted_booking$success))
+deleted_booking <- booking_client$delete_object(
+  end_point = end_point,
+  field = api_data$http_resp$bookingid
+)
+deleted_booking
 ```
